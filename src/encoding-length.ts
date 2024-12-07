@@ -46,7 +46,7 @@ function arrayBufferLength (value) {
     return digitCount(length) + 1 + length
 }
 
-function encodingLength (value) {
+export function encodingLength (value) {
     const length = 0
 
     if (value == null) return length

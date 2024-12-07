@@ -1,4 +1,4 @@
-import { concat, text2arr } from 'uint8-util'
+import { concat, text2arr, type TypedArray } from 'uint8-util'
 import { getType } from './util.js'
 
 /**
@@ -7,9 +7,13 @@ import { getType } from './util.js'
  * @param  {Uint8Array|Array|String|Object|Number|Boolean} data
  * @return {Uint8Array}
  */
-function encode (data, buffer, offset) {
+export function encode (
+    data:TypedArray|any[]|string|number|boolean|object,
+    buffer?:Uint8Array,
+    offset?:number
+):Uint8Array|null {
     const buffers = []
-    let result = null
+    let result:Uint8Array|null = null
 
     encode._encode(buffers, data)
     result = concat(buffers)
