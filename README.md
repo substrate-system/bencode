@@ -34,24 +34,21 @@ It supports four different types of values:
 Bencoding is most commonly used in torrent files.
 These metadata files are simply bencoded dictionaries.
 
-## Install with [npm](https://npmjs.org)
+## Install
 
-```
-npm install bencode
+```sh
+npm i -S @substrate-system/bencode
 ```
 
 ## Usage
 
-```javascript
-import bencode from 'bencode'
+```js
+import bencode from '@substrate-system/bencode'
 ```
-
-You can also use node-bencode with browserify to be able to use it in a lot of modern browsers.
 
 ### Encoding
 
-```javascript
-
+```js
 var data = {
   string: 'Hello World',
   integer: 12345,
@@ -62,10 +59,13 @@ var data = {
 }
 
 var result = bencode.encode( data )
-
 ```
 
-**NOTE** As of `bencode@0.8.0`, boolean values will be cast to integers (false -> 0, true -> 1).
+>
+> [!NOTE]  
+> As of `bencode@0.8.0`, boolean values will be cast to integers (false -> 0, true -> 1).
+>
+
 
 #### Output
 
@@ -75,14 +75,14 @@ d4:dictd3:key36:This is a string within a dictionarye7:integeri12345e4:listli1ei
 
 ### Decoding
 
-```javascript
+```js
 var data = Buffer.from('d6:string11:Hello World7:integeri12345e4:dictd3:key36:This is a string within a dictionarye4:listli1ei2ei3ei4e6:stringi5edeee')
 var result = bencode.decode( data )
 ```
 
 #### Output
 
-```javascript
+```js
 {
   string: <Buffer 48 65 6c 6c 6f 20 57 6f 72 6c 64>,
   integer: 12345,
@@ -95,7 +95,7 @@ var result = bencode.decode( data )
 
 Automagically convert bytestrings to strings:
 
-```javascript
+```js
 var result = bencode.decode( data, 'utf8' )
 ```
 
