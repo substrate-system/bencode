@@ -1,4 +1,4 @@
-import { concat, text2arr, type TypedArray } from 'uint8-util'
+import { concat, text2arr, type TypedArray } from '@substrate-system/uint8-util'
 import { getType } from './util.js'
 
 /**

@@ -1,4 +1,4 @@
-import { text2arr } from 'uint8-util'
+import { text2arr } from '@substrate-system/uint8-util'
 import { digitCount, getType } from './util.js'
 
 function listLength (list) {

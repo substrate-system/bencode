@@ -6,47 +6,6 @@ const DICTIONARY_START = 0x64  // 'd'
 const LIST_START = 0x6C  // 'l'
 const END_OF_TYPE = 0x65  // 'e'
 
-/**
- * replaces parseInt(buffer.toString('ascii', start, end)).
- * For strings with less then ~30 charachters, this is actually a lot faster.
- *
- * @param {Uint8Array} data
- * @param {Number} start
- * @param {Number} end
- * @return {Number} calculated number
- */
-function getIntFromBuffer (buffer, start, end) {
-    let sum = 0
-    let sign = 1
-
-    for (let i = start; i < end; i++) {
-        const num = buffer[i]
-
-        if (num < 58 && num >= 48) {
-            sum = sum * 10 + (num - 48)
-            continue
-        }
-
-        if (i === start && num === 43) { // +
-            continue
-        }
-
-        if (i === start && num === 45) { // -
-            sign = -1
-            continue
-        }
-
-        if (num === 46) { // .
-            // its a float. break here.
-            break
-        }
-
-        throw new Error('not a number: buffer[' + i + '] = ' + num)
-    }
-
-    return sum * sign
-}
-
 export interface Decode {
     (data:Uint8Array, start?:number, end?:number, encoding?:string):{
         'string':string;
@@ -171,7 +130,7 @@ decode.list = function () {
     if (!decode.data) return null
     decode.position++
 
-    const lst = []
+    const lst:ReturnType<typeof decode.next>[] = []
 
     while (decode.data[decode.position] !== END_OF_TYPE) {
         lst.push(decode.next())
@@ -184,23 +143,69 @@ decode.list = function () {
 
 decode.integer = function ():number {
     const end = decode.find(END_OF_TYPE)
-    const number = getIntFromBuffer(decode.data, decode.position + 1, end)
+    const number = getIntFromBuffer(decode.data!, decode.position + 1, end!)
 
-    decode.position += end + 1 - decode.position
+    decode.position += (end || 0) + 1 - decode.position
 
     return number
 }
 
 decode.buffer = function () {
-    let sep = decode.find(STRING_DELIM)
-    const length = getIntFromBuffer(decode.data, decode.position, sep)
-    const end = ++sep + length
+    const sep = decode.find(STRING_DELIM)
+    const length = getIntFromBuffer(decode.data!, decode.position, sep!)
+    let _sep = sep || 0
+    const end = (++_sep + length)
 
     decode.position = end
 
-    return decode.encoding
-        ? arr2text(decode.data.slice(sep, end))
-        : decode.data.slice(sep, end)
+    return decode.encoding ?
+        arr2text(decode.data!.slice(_sep, end)) :
+        decode.data!.slice(_sep, end)
 }
 
 export default decode
+
+/**
+ * replaces parseInt(buffer.toString('ascii', start, end)).
+ * For strings with less then ~30 charachters, this is actually a lot faster.
+ *
+ * @param {Uint8Array} buffer
+ * @param {number} start
+ * @param {number} end
+ * @return {number} calculated number
+ */
+function getIntFromBuffer (buffer:Uint8Array, start:number, end:number):number {
+    let sum = 0
+    let sign = 1
+
+    for (let i = start; i < end; i++) {
+        const num = buffer[i]
+
+        if (num < 58 && num >= 48) {
+            sum = sum * 10 + (num - 48)
+            continue
+        }
+
+        if (i === start && num === 43) { // +
+            continue
+        }
+
+        if (i === start && num === 45) { // -
+            sign = -1
+            continue
+        }
+
+        if (num === 46) { // .
+            // its a float. break here.
+            break
+        }
+
+        if (typeof buffer[i] === 'number') {
+            throw new Error(`Unexpected number at buffer[${i}]: ${num}`)
+        } else {
+            throw new Error('not a number: buffer[' + i + '] = ' + num)
+        }
+    }
+
+    return sum * sign
+}
