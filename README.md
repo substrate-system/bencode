@@ -1,8 +1,12 @@
-# Bencode
-[![npm](https://img.shields.io/npm/v/bencode.svg)](https://npmjs.com/bencode)
-[![npm downloads](https://img.shields.io/npm/dm/bencode.svg)](https://npmjs.com/bencode)
-[![ci](https://github.com/webtorrent/node-bencode/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/webtorrent/node-bencode/actions/workflows/ci.yml)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwebtorrent%2Fnode-bencode.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwebtorrent%2Fnode-bencode?ref=badge_shield)
+# bencode
+
+![tests](https://github.com/substrate-system/node-bencode/actions/workflows/nodejs.yml/badge.svg)
+[![types](https://img.shields.io/npm/types/@substrate-system/node-bencode?style=flat-square)](README.md)
+[![module](https://img.shields.io/badge/module-ESM%2FCJS-blue?style=flat-square)](README.md)
+[![semantic versioning](https://img.shields.io/badge/semver-2.0.0-blue?logo=semver&style=flat-square)](https://semver.org/)
+[![Common Changelog](https://nichoth.github.io/badge/common-changelog.svg)](./CHANGELOG.md)
+[![install size](https://flat.badgen.net/packagephobia/install/@substrate-system/bencode)](https://packagephobia.com/result?p=@nichoth/session-cookie)
+[![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 A node library for encoding and decoding bencoded data,
 according to the [BitTorrent specification](http://www.bittorrent.org/beps/bep_0003.html).

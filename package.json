@@ -1,11 +1,53 @@
 {
-  "name": "bencode",
+  "name": "@substrate-system/bencode",
   "description": "Bencode de/encoder",
   "version": "4.0.0",
-  "bugs": {
-    "url": "https://github.com/webtorrent/node-bencode/issues"
-  },
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "lint": "eslint \"./**/*.{ts,js}\"",
+    "build-tests": "esbuild test/index.ts --target=es2020 --bundle --keep-names > test/test-bundle.js",
+    "test": "npm run lint && npm run build && npm run build-tests && npm run test-tape-run",
+    "test-tape-run": "cat test/index.html | tape-run --input=html --static=test | tap-spec",
+    "build-cjs": "esbuild src/*.ts --format=cjs --keep-names --tsconfig=tsconfig.build.json --outdir=./dist --out-extension:.js=.cjs --sourcemap",
+    "build-cjs:min": "esbuild src/*.ts --format=cjs --minify --keep-names --tsconfig=tsconfig.build.json --outdir=./dist --out-extension:.js=.min.cjs --sourcemap",
+    "build-esm": "esbuild src/*.ts --format=esm --metafile=dist/meta.json --keep-names --tsconfig=tsconfig.build.json --outdir=./dist --sourcemap && tsc --emitDeclarationOnly --project tsconfig.build.json --outDir dist",
+    "build-esm:min": "esbuild ./src/*.ts --format=esm --keep-names --bundle --tsconfig=tsconfig.build.json --minify --out-extension:.js=.min.js --outdir=./dist --sourcemap",
+    "build-docs": "typedoc ./src/index.ts",
+    "build": "mkdir -p ./dist && rm -rf ./dist/* && npm run build-cjs && npm run build-esm && npm run build-esm:min && npm run build-cjs:min",
+    "preversion": "npm run lint",
+    "version": "auto-changelog -p --template keepachangelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md README.md",
+    "postversion": "git push --follow-tags && npm publish",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "uint8-util": "^2.2.2"
+  },
+  "devDependencies": {
+    "@substrate-system/debug": "^0.7.2",
+    "@substrate-system/tapzero": "^0.10.5",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "auto-changelog": "^2.4.0",
+    "bencoding": "latest",
+    "bncode": "latest",
+    "btparse": "latest",
+    "dht-bencode": "latest",
+    "dht.js": "latest",
+    "esbuild": "^0.24.0",
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "tap-spec": "5.0.0",
+    "markdown-toc": "^1.2.0",
+    "nanobench": "3.0.0",
+    "typedoc": "^0.27.0",
+    "typescript": "^5.4.5"
+  },
   "contributors": [
     {
       "name": "Mark Schmale",
@@ -16,21 +58,20 @@
       "name": "Jonas Hermsmeier",
       "email": "jhermsmeier@gmail.com",
       "url": "https://jhermsmeier.de/"
+    },
+    {
+      "name": "Nick Thomas",
+      "email": "nichoth@nichoth.com",
+      "url": "https://nichoth.com/"
     }
   ],
-  "devDependencies": {
-    "@webtorrent/semantic-release-config": "1.0.10",
-    "bencoding": "latest",
-    "bncode": "latest",
-    "browserify": "^17.0.0",
-    "btparse": "latest",
-    "dht-bencode": "latest",
-    "dht.js": "latest",
-    "nanobench": "3.0.0",
-    "semantic-release": "21.1.2",
-    "standard": "17.1.0",
-    "tap-spec": "5.0.0",
-    "tape": "5.9.0"
+  "bugs": {
+    "url": "https://github.com/webtorrent/node-bencode/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/webtorrent/node-bencode.git"
   },
   "keywords": [
     "bdecode",
@@ -38,35 +79,5 @@
     "bencoding",
     "bittorrent",
     "torrent"
-  ],
-  "license": "MIT",
-  "engines": {
-    "node": ">=12.20.0"
-  },
-  "exports": {
-    "import": "./index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/webtorrent/node-bencode.git"
-  },
-  "scripts": {
-    "benchmark": "nanobench benchmark/*.js",
-    "bundle": "mkdir -p dist && npm run bundle:lib && npm run bundle:test",
-    "bundle:lib": "browserify lib/index.js -s bencode -o dist/bencode.js",
-    "bundle:test": "browserify test/*.test.js -o dist/tests.js",
-    "style": "standard --fix",
-    "test": "standard && tape test/*.test.js | tap-spec"
-  },
-  "renovate": {
-    "extends": [
-      "github>webtorrent/renovate-config"
-    ]
-  },
-  "release": {
-    "extends": "@webtorrent/semantic-release-config"
-  },
-  "dependencies": {
-    "uint8-util": "^2.2.2"
-  }
+  ]
 }
