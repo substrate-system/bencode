@@ -14,61 +14,61 @@ const object = bencode.decode(buffer)
 const ITERATIONS = 10000
 
 bench(`bencode.encode() ⨉ ${ITERATIONS}`, function (run) {
-  let result = null
+    let result = null
 
-  run.start()
-  for (let i = 0; i < ITERATIONS; i++) {
-    result = bencode.encode(object)
-  }
-  run.end()
+    run.start()
+    for (let i = 0; i < ITERATIONS; i++) {
+        result = bencode.encode(object)
+    }
+    run.end()
 
-  return result
+    return result
 })
 
 bench(`bencoding.encode() ⨉ ${ITERATIONS}`, function (run) {
-  let result = null
+    let result = null
 
-  run.start()
-  for (let i = 0; i < ITERATIONS; i++) {
-    result = bencoding.encode(object)
-  }
-  run.end()
+    run.start()
+    for (let i = 0; i < ITERATIONS; i++) {
+        result = bencoding.encode(object)
+    }
+    run.end()
 
-  return result
+    return result
 })
 
 bench(`bncode.encode() ⨉ ${ITERATIONS}`, function (run) {
-  let result = null
+    let result = null
 
-  run.start()
-  for (let i = 0; i < ITERATIONS; i++) {
-    result = bncode.encode(object)
-  }
-  run.end()
+    run.start()
+    for (let i = 0; i < ITERATIONS; i++) {
+        result = bncode.encode(object)
+    }
+    run.end()
 
-  return result
+    return result
 })
 
 bench(`dht.encode() ⨉ ${ITERATIONS}`, function (run) {
-  let result = null
+    let result = null
 
-  run.start()
-  for (let i = 0; i < ITERATIONS; i++) {
-    result = dht.encode(object)
-  }
-  run.end()
+    run.start()
+    for (let i = 0; i < ITERATIONS; i++) {
+        result = dht.encode(object)
+    }
+    run.end()
 
-  return result
+    return result
 })
 
 bench(`dhtBencode.encode() ⨉ ${ITERATIONS}`, function (run) {
-  let result = null
+    let result = null
 
-  run.start()
-  for (let i = 0; i < ITERATIONS; i++) {
-    result = dhtBencode.bencode(object)
-  }
-  run.end()
+    run.start()
+    for (let i = 0; i < ITERATIONS; i++) {
+        result = dhtBencode.bencode(object)
+    }
+    run.end()
 
-  return result
+    return result
 })
