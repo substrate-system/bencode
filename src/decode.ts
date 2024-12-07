@@ -48,11 +48,7 @@ function getIntFromBuffer (buffer, start, end) {
 }
 
 export interface Decode {
-    (data:Uint8Array, opts?:Partial<{
-        start:number,
-        end:number,
-        encoding:string
-    }>):{ 'string':string, integer:number }|any[]|ArrayBufferLike|null;
+    (data:Uint8Array, start?:number, end?:number, encoding?:string):Uint8Array;
     data:Uint8Array|null;
     encoding:null|string;
     bytes:number;
@@ -69,27 +65,41 @@ export interface Decode {
  * Decodes bencoded data.
  *
  * @param  {Uint8Array} data
- * @param  {{ start, end, encoding }} [opts] (optional)
+ * @param  {number|string} [start] (optional)
+ * @param  {number|string} [end] (optional)
+ * @param  {string} [encoding] (optional)
  * @return {Object|Array|Uint8Array|string|number}
  */
 export const decode:Decode = function decode (
-    data?:Uint8Array,
-    opts?:Partial<{
-        start?:number,
-        end?:number,
-        encoding?:string
-    }>
+    data:Uint8Array,
+    _start?:number|string,
+    _end?:number|string,
+    _encoding?:string
 ) {
     if (data == null || data.length === 0) {
         return null
     }
 
+    let encoding:string|undefined = _encoding
+    let start:number|undefined
+    let end:number|undefined
+
+    if (typeof _start !== 'number' && _encoding == null) {
+        encoding = _start!
+        start = undefined
+    }
+
+    if (typeof _end !== 'number' && _encoding == null) {
+        encoding = _end!
+        end = undefined
+    }
+
     decode.position = 0
-    decode.encoding = opts?.encoding || null
+    decode.encoding = encoding || null
 
     decode.data = !(ArrayBuffer.isView(data)) ?
         text2arr(data) :
-        new Uint8Array(data.slice(opts?.start, opts?.end))
+        new Uint8Array(data.slice(start as number|undefined, end as number|undefined))
 
     decode.bytes = decode.data.length
 
@@ -101,7 +111,7 @@ decode.position = 0
 decode.data = null
 decode.encoding = null
 
-decode.next = function ():Record<string, string>|any[]|ArrayBufferLike|null {
+decode.next = function () {
     switch (decode.data![decode.position]) {
         case DICTIONARY_START:
             return decode.dictionary()
@@ -154,7 +164,7 @@ decode.list = function () {
     if (!decode.data) return null
     decode.position++
 
-    const lst:any[] = []
+    const lst = []
 
     while (decode.data[decode.position] !== END_OF_TYPE) {
         lst.push(decode.next())
@@ -165,9 +175,8 @@ decode.list = function () {
     return lst
 }
 
-decode.integer = function ():number|null {
+decode.integer = function ():number {
     const end = decode.find(END_OF_TYPE)
-    if (!end) return null
     const number = getIntFromBuffer(decode.data, decode.position + 1, end)
 
     decode.position += end + 1 - decode.position
@@ -175,17 +184,16 @@ decode.integer = function ():number|null {
     return number
 }
 
-decode.buffer = function ():string|Uint8Array|null {
+decode.buffer = function () {
     let sep = decode.find(STRING_DELIM)
-    if (!sep) return null
     const length = getIntFromBuffer(decode.data, decode.position, sep)
     const end = ++sep + length
 
     decode.position = end
 
-    return decode.encoding ?
-        arr2text(decode.data!.slice(sep, end)) :
-        decode.data!.slice(sep, end)
+    return decode.encoding
+        ? arr2text(decode.data.slice(sep, end))
+        : decode.data.slice(sep, end)
 }
 
 export default decode
