@@ -1,4 +1,4 @@
-import { arr2text, text2arr, arr2hex } from 'uint8-util'
+import { arr2hex, text2arr, arr2text } from '@substrate-system/uint8-util'
 
 const INTEGER_START = 0x69  // 'i'
 const STRING_DELIM = 0x3A  // ':'
@@ -48,7 +48,14 @@ function getIntFromBuffer (buffer, start, end) {
 }
 
 export interface Decode {
-    (data:Uint8Array, start?:number, end?:number, encoding?:string):Uint8Array;
+    (data:Uint8Array, start?:number, end?:number, encoding?:string):{
+        'string':string;
+        integer:number;
+    }
+    (input:Uint8Array, start:number, encoding:string):{
+        'string':string;
+        integer:number;
+    }
     data:Uint8Array|null;
     encoding:null|string;
     bytes:number;
@@ -101,7 +108,7 @@ export const decode:Decode = function decode (
         text2arr(data) :
         new Uint8Array(data.slice(start as number|undefined, end as number|undefined))
 
-    decode.bytes = decode.data.length
+    decode.bytes = decode.data?.length || 0
 
     return decode.next()
 }

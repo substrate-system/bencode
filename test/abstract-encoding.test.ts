@@ -44,20 +44,15 @@ test('decode from an offset', function (t) {
     t.plan(1)
     const pad = '_______________________________'
     const input = Buffer.from(pad + 'd7:integeri12345e6:string11:Hello Worlde')
-    const output = bencode.decode(input, {
-        encoding: 'utf8',
-        start: pad.length,
-    })
+    const output = bencode.decode(input, pad.length, 'utf8')
     t.deepEqual(output, { string: 'Hello World', integer: 12345 })
 })
 
-test('abstract encoding', function (t) {
-    t.test('decode between an offset and end', function (t) {
-        const pad = '_______________________________'
-        const data = 'd7:integeri12345e6:string11:Hello Worlde'
-        const input = Buffer.from(pad + data + pad)
-        const output = bencode.decode(input, pad.length, pad.length + data.length, 'utf8')
-        t.plan(1)
-        t.deepEqual(output, { string: 'Hello World', integer: 12345 })
-    })
+test('decode between an offset and end', function (t) {
+    t.plan(1)
+    const pad = '_______________________________'
+    const data = 'd7:integeri12345e6:string11:Hello Worlde'
+    const input = Buffer.from(pad + data + pad)
+    const output = bencode.decode(input, pad.length, pad.length + data.length, 'utf8')
+    t.deepEqual(output, { string: 'Hello World', integer: 12345 })
 })

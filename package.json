@@ -26,7 +26,9 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "uint8-util": "^2.2.2"
+    "@substrate-system/uint8-util": "^2.2.6",
+    "uint8-util": "^2.2.2",
+    "uint8arrays": "^5.1.0"
   },
   "devDependencies": {
     "@substrate-system/debug": "^0.7.2",
