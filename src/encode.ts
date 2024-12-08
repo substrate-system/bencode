@@ -8,7 +8,7 @@ import { getType } from './util.js'
  * @return {Uint8Array}
  */
 export function encode (
-    data:TypedArray|any[]|string|number|boolean|object,
+    data?:TypedArray|any[]|string|number|boolean|object|null,
     buffer?:Uint8Array,
     offset?:number
 ):Uint8Array|null {
