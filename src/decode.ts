@@ -6,7 +6,7 @@ const DICTIONARY_START = 0x64  // 'd'
 const LIST_START = 0x6C  // 'l'
 const END_OF_TYPE = 0x65  // 'e'
 
-type Decoded =
+export type Decoded =
     | Record<string, any>
     | Array<any>
     | Uint8Array
