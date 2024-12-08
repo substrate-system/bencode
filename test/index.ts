@@ -1,0 +1,6 @@
+import './abstract-encoding.test'
+import './BEP-0023.test'
+import './decode.buffer.test'
+import './decode.utf8.test'
+import './encoding-length.test'
+import './null-values.test'

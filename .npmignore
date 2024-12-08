@@ -1,9 +1,4 @@
-*.html
-*.log
-.github/
-AUTHORS
-Makefile
-benchmark
-dist
-test
-.editorconfig
+!dist
+node_modules
+.env
+.DS_Store
