@@ -160,9 +160,11 @@ decode.dictionary = function ():Record<string, any>|null {
 
     while (decode.data[decode.position] !== END_OF_TYPE) {
         const buffer = decode.buffer()
-        console.log('**typeof buffer**', typeof buffer)
-        console.log('**the buffer**', buffer)
-        let key = arr2text(buffer as Uint8Array)
+        if (typeof buffer === 'string') {
+            dict[buffer] = decode.next()
+            continue
+        }
+        let key = arr2text(buffer)
         if (key.includes('\uFFFD')) key = arr2hex(buffer)
         dict[key] = decode.next()
     }
