@@ -168,6 +168,13 @@ interface Decoder {
     find:(ch:number)=>number|null;
     integer:()=>number;
 }
+
+const decode:Decoder = function decode (
+    data:Uint8Array|string,
+    start?:number|string,
+    end?:number|string,
+    encoding?:string
+):Decoded
 ```
 
 If `encoding` is set, bytestrings are
