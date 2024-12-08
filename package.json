@@ -22,7 +22,7 @@
     "build": "mkdir -p ./dist && rm -rf ./dist/* && npm run build-cjs && npm run build-esm && npm run build-esm:min && npm run build-cjs:min",
     "toc": "markdown-toc --maxdepth 3 -i README.md",
     "preversion": "npm run lint",
-    "version": "npm run toc && auto-changelog -p --template keepachangelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md README.md",
+    "version": "npm run toc && git add README.md",
     "postversion": "git push --follow-tags && npm publish",
     "prepublishOnly": "npm run build"
   },
@@ -35,7 +35,6 @@
     "@types/node": "^22.10.1",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
-    "auto-changelog": "^2.4.0",
     "bencoding": "latest",
     "bncode": "latest",
     "btparse": "latest",
