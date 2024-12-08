@@ -1,5 +1,5 @@
 import { test } from '@substrate-system/tapzero'
-import bencode from '../src/index.js'
+import bencode from '../index.js'
 
 test('encodingLength( value )', function (t) {
     t.plan(1)
