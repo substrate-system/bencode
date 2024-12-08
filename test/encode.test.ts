@@ -40,7 +40,7 @@ test('should force keys to be strings', function (t) {
 
 test('should encode a Map as dictionary', function (t) {
     t.plan(1)
-    const data = new Map([
+    const data = new Map<string|number|Buffer, string|number|Buffer>([
         [12, 'Hello World'],
         ['34', 12345],
         [Buffer.from('buffer key'), Buffer.from('buffer value')]
