@@ -1,5 +1,5 @@
 import { test } from '@substrate-system/tapzero'
-import bencode from '../index.js'
+import bencode from '../src/index.js'
 
 test('encodingLength( value )', function (t) {
     t.plan(1)
@@ -9,27 +9,27 @@ test('encodingLength( value )', function (t) {
 })
 
 test('encoding.bytes', t => {
-    const output = bencode.encode({ string: 'Hello World', integer: 12345 })
     t.plan(1)
+    const output = bencode.encode({ string: 'Hello World', integer: 12345 })
     t.equal(output?.length, bencode.encode.bytes)
 })
 
 test('encode into an existing buffer', function (t) {
+    t.plan(1)
     const input = { string: 'Hello World', integer: 12345 }
     const output = Buffer.from('d7:integeri12345e6:string11:Hello Worlde')
     const target = Buffer.allocUnsafe(output.length)
     bencode.encode(input, target)
-    t.plan(1)
     t.deepEqual(target, output)
 })
 
 test('encode into a buffer with an offset', function (t) {
+    t.plan(1)
     const input = { string: 'Hello World', integer: 12345 }
     const output = Buffer.from('d7:integeri12345e6:string11:Hello Worlde')
     const target = Buffer.allocUnsafe(64 + output.length) // Pad with 64 bytes
     const offset = 48
     bencode.encode(input, target, offset)
-    t.plan(1)
     t.deepEqual(target.slice(offset, offset + output.length), output)
 })
 
