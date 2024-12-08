@@ -1,22 +1,33 @@
 # bencode
 
 ![tests](https://github.com/substrate-system/node-bencode/actions/workflows/nodejs.yml/badge.svg)
-[![types](https://img.shields.io/npm/types/@substrate-system/node-bencode?style=flat-square)](README.md)
+[![types](https://img.shields.io/npm/types/@substrate-system/bencode?style=flat-square)](README.md)
 [![module](https://img.shields.io/badge/module-ESM%2FCJS-blue?style=flat-square)](README.md)
 [![semantic versioning](https://img.shields.io/badge/semver-2.0.0-blue?logo=semver&style=flat-square)](https://semver.org/)
 [![Common Changelog](https://nichoth.github.io/badge/common-changelog.svg)](./CHANGELOG.md)
-[![install size](https://flat.badgen.net/packagephobia/install/@substrate-system/bencode)](https://packagephobia.com/result?p=@nichoth/session-cookie)
+[![install size](https://flat.badgen.net/packagephobia/install/@substrate-system/bencode)](https://packagephobia.com/result?p=@substrate-system/bencode)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 A node library for encoding and decoding bencoded data,
 according to the [BitTorrent specification](http://www.bittorrent.org/beps/bep_0003.html).
 
-## Index
+<details><summary><h2>Contents</h2></summary>
+
+<!-- toc -->
 
 - [About BEncoding](#about-bencoding)
-- [Installation](#install-with-npm)
+- [Install](#install)
 - [Usage](#usage)
+  * [Encoding](#encoding)
+  * [Decoding](#decoding)
 - [API](#api)
+  * [bencode.encode( *data*, *[buffer]*, *[offset]* )](#bencodeencode-data-buffer-offset-)
+  * [bencode.decode( *data*, *[start]*, *[end]*, *[encoding]* )](#bencodedecode-data-start-end-encoding-)
+  * [bencode.byteLength( *value* ) or bencode.encodingLength( *value* )](#bencodebytelength-value--or-bencodeencodinglength-value-)
+
+<!-- tocstop -->
+
+</details>
 
 ## About BEncoding
 
@@ -76,13 +87,15 @@ d4:dictd3:key36:This is a string within a dictionarye7:integeri12345e4:listli1ei
 ### Decoding
 
 ```js
+import bencode from '@substrate-system/bencode'
+
 var data = Buffer.from('d6:string11:Hello World7:integeri12345e4:dictd3:key36:This is a string within a dictionarye4:listli1ei2ei3ei4e6:stringi5edeee')
 var result = bencode.decode( data )
 ```
 
 #### Output
 
-```js
+```
 {
   string: <Buffer 48 65 6c 6c 6f 20 57 6f 72 6c 64>,
   integer: 12345,
@@ -96,12 +109,12 @@ var result = bencode.decode( data )
 Automagically convert bytestrings to strings:
 
 ```js
-var result = bencode.decode( data, 'utf8' )
+const result = bencode.decode( data, 'utf8' )
 ```
 
 #### Output
 
-```javascript
+```js
 {
   string: 'Hello World',
   integer: 12345,
@@ -118,18 +131,44 @@ The API is compatible with the [`abstract-encoding`](https://github.com/mafintos
 
 ### bencode.encode( *data*, *[buffer]*, *[offset]* )
 
-> `Buffer` | `Array` | `String` | `Object` | `Number` | `Boolean` __data__
-> `Buffer` __buffer__
-> `Number` __offset__
+```ts
+function encode (
+    data?:TypedArray|any[]|string|number|boolean|object|null,
+    buffer?:Uint8Array,
+    offset?:number
+):Uint8Array|null
+```
 
-Returns `Buffer`
+Returns `Uint8Array`.
 
 ### bencode.decode( *data*, *[start]*, *[end]*, *[encoding]* )
 
-> `Buffer` __data__
-> `Number` __start__
-> `Number` __end__
-> `String` __encoding__
+```ts
+type Decoded =
+    | Record<string, any>
+    | Array<any>
+    | Uint8Array
+    | string
+    | number
+    | null;
+
+interface Decoder {
+    (data:Uint8Array|string):Decoded
+    (data:Uint8Array|string, encoding:string):Decoded
+    (data:Uint8Array|string, start:number, encoding:string):Decoded
+    (data:Uint8Array|string, start:number, end:number, encoding:string):Decoded
+    data:Uint8Array|null;
+    bytes;
+    position:number;
+    encoding:string|null;
+    next:()=>any;
+    dictionary:()=>any;
+    list:()=>any;
+    buffer:()=>Uint8Array|string;
+    find:(ch:number)=>number|null;
+    integer:()=>number;
+}
+```
 
 If `encoding` is set, bytestrings are
 automatically converted to strings.

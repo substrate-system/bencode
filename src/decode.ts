@@ -7,7 +7,7 @@ const LIST_START = 0x6C  // 'l'
 const END_OF_TYPE = 0x65  // 'e'
 
 type Decoded =
-    Record<string, any>
+    | Record<string, any>
     | Array<any>
     | Uint8Array
     | string
@@ -29,47 +29,6 @@ export interface Decoder {
     buffer:()=>Uint8Array|string;
     find:(ch:number)=>number|null;
     integer:()=>number;
-}
-
-/**
- * replaces parseInt(buffer.toString('ascii', start, end)).
- * For strings with less then ~30 charachters, this is actually a lot faster.
- *
- * @param {Uint8Array} data
- * @param {Number} start
- * @param {Number} end
- * @return {Number} calculated number
- */
-function getIntFromBuffer (buffer, start, end) {
-    let sum = 0
-    let sign = 1
-
-    for (let i = start; i < end; i++) {
-        const num = buffer[i]
-
-        if (num < 58 && num >= 48) {
-            sum = sum * 10 + (num - 48)
-            continue
-        }
-
-        if (i === start && num === 43) { // +
-            continue
-        }
-
-        if (i === start && num === 45) { // -
-            sign = -1
-            continue
-        }
-
-        if (num === 46) { // .
-            // its a float. break here.
-            break
-        }
-
-        throw new Error('not a number: buffer[' + i + '] = ' + num)
-    }
-
-    return sum * sign
 }
 
 /**
@@ -212,3 +171,44 @@ decode.buffer = function () {
 }
 
 export default decode
+
+/**
+ * replaces parseInt(buffer.toString('ascii', start, end)).
+ * For strings with less then ~30 charachters, this is actually a lot faster.
+ *
+ * @param {Uint8Array} data
+ * @param {Number} start
+ * @param {Number} end
+ * @return {Number} calculated number
+ */
+function getIntFromBuffer (buffer, start, end) {
+    let sum = 0
+    let sign = 1
+
+    for (let i = start; i < end; i++) {
+        const num = buffer[i]
+
+        if (num < 58 && num >= 48) {
+            sum = sum * 10 + (num - 48)
+            continue
+        }
+
+        if (i === start && num === 43) { // +
+            continue
+        }
+
+        if (i === start && num === 45) { // -
+            sign = -1
+            continue
+        }
+
+        if (num === 46) { // .
+            // its a float. break here.
+            break
+        }
+
+        throw new Error('not a number: buffer[' + i + '] = ' + num)
+    }
+
+    return sum * sign
+}
