@@ -8,7 +8,7 @@
 [![install size](https://flat.badgen.net/packagephobia/install/@substrate-system/bencode?cache-control=no-cache)](https://packagephobia.com/result?p=@substrate-system/bencode)
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
-A node library for encoding and decoding bencoded data,
+A library for encoding and decoding bencoded data,
 according to the [BitTorrent specification](http://www.bittorrent.org/beps/bep_0003.html).
 
 <details><summary><h2>Contents</h2></summary>
