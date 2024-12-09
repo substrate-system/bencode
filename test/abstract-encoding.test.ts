@@ -34,9 +34,9 @@ test('encode into a buffer with an offset', function (t) {
 })
 
 test('decode.bytes', function (t) {
+    t.plan(1)
     const input = Buffer.from('d7:integeri12345e6:string11:Hello Worlde')
     bencode.decode(input)
-    t.plan(1)
     t.equal(bencode.decode.bytes, input.length)
 })
 

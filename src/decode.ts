@@ -9,23 +9,21 @@ const END_OF_TYPE = 0x65  // 'e'
 export type Decoded =
     | Record<string, any>
     | Array<any>
-    | Uint8Array
     | string
-    | number
-    | null;
+    | number;
 
 export interface Decoder {
-    (data:Uint8Array|string):Decoded
-    (data:Uint8Array|string, encoding:string):Decoded
-    (data:Uint8Array|string, start:number, encoding:string):Decoded
-    (data:Uint8Array|string, start:number, end:number, encoding:string):Decoded
+    (data:Uint8Array|string):Decoded|null
+    (data:Uint8Array|string, encoding:string):Decoded|null
+    (data:Uint8Array|string, start:number, encoding:string):Decoded|null
+    (data:Uint8Array|string, start:number, end:number, encoding:string):Decoded|null
     data:Uint8Array|null;
-    bytes;
+    bytes:number;
     position:number;
     encoding:string|null;
-    next:()=>any;
-    dictionary:()=>any;
-    list:()=>any;
+    next:()=>Record<string, any>|Array<any>|Uint8Array|string|number|null;
+    dictionary:()=>Record<string, any>|null;
+    list:()=>any[];
     buffer:()=>Uint8Array|string;
     find:(ch:number)=>number|null;
     integer:()=>number;
@@ -45,7 +43,7 @@ const decode:Decoder = function decode (
     start?:number|string,
     end?:number|string,
     encoding?:string
-):Decoded {
+):Decoded|null {
     if (data == null || data.length === 0) {
         return null
     }
@@ -93,7 +91,7 @@ decode.next = function ():Record<string, any>|Array<any>|Uint8Array|string|numbe
     }
 }
 
-decode.find = function (chr) {
+decode.find = function (chr:number):number|null {
     if (!decode.data?.length) return null
     let i = decode.position
     const c = decode.data.length
@@ -133,7 +131,7 @@ decode.dictionary = function ():Record<string, any>|null {
     return dict
 }
 
-decode.list = function () {
+decode.list = function ():any[] {
     decode.position++
 
     const lst:any[] = []
@@ -157,7 +155,7 @@ decode.integer = function () {
     return number
 }
 
-decode.buffer = function () {
+decode.buffer = function ():Uint8Array|string {
     const sep = decode.find(STRING_DELIM)
     const newIndex = (sep || 0) + 1
     const length = getIntFromBuffer(decode.data, decode.position, sep)

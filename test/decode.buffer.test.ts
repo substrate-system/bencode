@@ -8,7 +8,7 @@ test('should be able to decode an integer', function (t) {
     t.equal(bencode.decode('i-123e'), -123)
 })
 
-test('should be throw an error when trying to decode a broken integer', function (t) {
+test('should throw an error when trying to decode a broken integer', function (t) {
     t.plan(2)
     t.throws(function () {
         bencode.decode('i12+3e')

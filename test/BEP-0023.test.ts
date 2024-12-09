@@ -1,8 +1,8 @@
 import path, { dirname } from 'path'
 import fs from 'fs'
 import { test } from '@substrate-system/tapzero'
-import bencode from '../src/index.js'
 import { fileURLToPath } from 'url'
+import bencode from '../src/index.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -24,7 +24,7 @@ test('should be able to handle an compacted peer announce', function (t) {
     })
 })
 
-test('should be able to handle an compacted peer announce when decoding strings', function (t) {
+test('should be able to handle a compacted peer announce when decoding strings', function (t) {
     const filename = path.join(__dirname, 'data', 'announce-compacted-peers.bin')
     const announce = fs.readFileSync(filename)
     const data = bencode.decode(announce, 'utf8')

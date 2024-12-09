@@ -103,7 +103,8 @@ test('should be able to decode stuff in dicts (issue #12)', function (t) {
 })
 
 // test("bencode#decode(x, 'uft8')", function (t) {
-// // these tests weren't actually correctly testing values, just mangling values and checking if they are mangled, TODO: fix
+// // these tests weren't actually correctly testing values, just mangling values
+// //   and checking if they are mangled, TODO: fix
 // // t.test('should be able to decode "binary keys"', function (t) {
 // //   t.plan(1)
 // //   const decoded = bencode.decode(data.binKeyData, 'utf8')

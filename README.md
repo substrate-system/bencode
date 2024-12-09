@@ -60,7 +60,7 @@ import bencode from '@substrate-system/bencode'
 ### Encoding
 
 ```js
-var data = {
+const data = {
   string: 'Hello World',
   integer: 12345,
   dict: {
@@ -69,7 +69,7 @@ var data = {
   list: [ 1, 2, 3, 4, 'string', 5, {} ]
 }
 
-var result = bencode.encode( data )
+const result = bencode.encode( data )
 ```
 
 >
@@ -89,8 +89,8 @@ d4:dictd3:key36:This is a string within a dictionarye7:integeri12345e4:listli1ei
 ```js
 import bencode from '@substrate-system/bencode'
 
-var data = Buffer.from('d6:string11:Hello World7:integeri12345e4:dictd3:key36:This is a string within a dictionarye4:listli1ei2ei3ei4e6:stringi5edeee')
-var result = bencode.decode( data )
+var const = Buffer.from('d6:string11:Hello World7:integeri12345e4:dictd3:key36:This is a string within a dictionarye4:listli1ei2ei3ei4e6:stringi5edeee')
+const result = bencode.decode(data)
 ```
 
 #### Output
@@ -109,7 +109,7 @@ var result = bencode.decode( data )
 Automagically convert bytestrings to strings:
 
 ```js
-const result = bencode.decode( data, 'utf8' )
+const result = bencode.decode(data, 'utf8')
 ```
 
 #### Output
@@ -177,8 +177,7 @@ const decode:Decoder = function decode (
 ):Decoded
 ```
 
-If `encoding` is set, bytestrings are
-automatically converted to strings.
+If `encoding` is set, bytestrings are automatically converted to strings.
 
 Returns `Object` | `Array` | `Buffer` | `String` | `Number`
 
