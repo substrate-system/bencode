@@ -32,7 +32,7 @@ export interface Decoder {
 /**
  * Decode bencoded data.
  *
- * @param  {Uint8Array} data The buffer to decode
+ * @param  {Uint8Array|string} data The buffer to decode
  * @param  {number} [start] Optional start index
  * @param  {number} [end] Optional end index
  * @param  {string} [encoding] Optional encoding type (utf8, etc)
@@ -44,8 +44,8 @@ const decode:Decoder = function decode (
     end?:number|string,
     encoding?:string
 ):Decoded|null {
-    if (data == null || data.length === 0) {
-        return null
+    if (!data || data.length === 0) {
+        throw new Error('Missing data to decode.')
     }
 
     if (typeof start !== 'number' && encoding == null) {
