@@ -11,12 +11,10 @@ export function encode (
     data?:TypedArray|any[]|string|number|boolean|object|null,
     buffer?:Uint8Array,
     offset?:number
-):Uint8Array|null {
+):Uint8Array {
     const buffers = []
-    let result:Uint8Array|null = null
-
     encode._encode(buffers, data)
-    result = concat(buffers)
+    const result:Uint8Array = concat(buffers)
     encode.bytes = result.length
 
     if (ArrayBuffer.isView(buffer)) {
