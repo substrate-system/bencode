@@ -2,6 +2,8 @@ import encode from './encode.js'
 import byteLength from './encoding-length.js'
 import decode from './decode.js'
 
+export * from './decode.js'
+
 /**
  * Determines the amount of bytes
  * needed to encode the given value

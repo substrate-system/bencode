@@ -10,6 +10,7 @@
     }
   },
   "scripts": {
+    "benchmark": "nanobench benchmark/*.js",
     "lint": "eslint \"./**/*.{ts,js}\"",
     "build-tests": "esbuild test/index.ts --target=es2020 --bundle --keep-names > test/test-bundle.js",
     "test": "npm run build && esbuild ./test/index.ts --format=esm --platform=node --bundle > test/index.js && node test/index.js | tap-spec",
