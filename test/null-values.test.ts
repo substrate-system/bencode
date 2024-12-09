@@ -10,10 +10,13 @@ test(
     }
 )
 
-test('should return null when decoding an empty value', function (t) {
-    t.plan(2)
-    t.deepEqual(bencode.decode(Buffer.allocUnsafe(0)), null)
-    t.deepEqual(bencode.decode(''), null)
+test('should throw when decoding an empty value', function (t) {
+    t.plan(1)
+    try {
+        t.deepEqual(bencode.decode(Buffer.allocUnsafe(0)), null)
+    } catch (err) {
+        t.ok(err, 'should throw')
+    }
 })
 
 test('should omit null values when encoding', function (t) {
