@@ -68,12 +68,12 @@
     }
   ],
   "bugs": {
-    "url": "https://github.com/webtorrent/node-bencode/issues"
+    "url": "https://github.com/substrate-system/node-bencode/issues"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/webtorrent/node-bencode.git"
+    "url": "git://github.com/substrate-system/node-bencode.git"
   },
   "keywords": [
     "bdecode",
