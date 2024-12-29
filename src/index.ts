@@ -3,6 +3,7 @@ import byteLength from './encoding-length.js'
 import decode from './decode.js'
 
 export * from './decode.js'
+export * from './encode.js'
 
 /**
  * Determines the amount of bytes
@@ -12,3 +13,4 @@ export * from './decode.js'
  */
 const encodingLength = byteLength
 export default { encode, decode, byteLength, encodingLength }
+
